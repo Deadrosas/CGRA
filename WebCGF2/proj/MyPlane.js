@@ -4,7 +4,7 @@ class MyPlane extends CGFobject {
         nDivs = typeof nDivs !== 'undefined' ? nDivs : 1;
 
         this.nDivs = nDivs;
-        this.patchLength = 1.0 / nDivs;
+        this.patchLength = 60 / nDivs;
 
         this.initBuffers();
     }
@@ -35,6 +35,11 @@ class MyPlane extends CGFobject {
             xCoord += this.patchLength;
         }
 
+        for (var i = 0; i <= this.nDivs; i++){
+            
+        }
+        
+
         // Generating indices
         /* for nDivs = 3 output will be [0, 1, 2, 3, 4, 5, 6, 7].
         Interpreting this index list as a TRIANGLE_STRIP will draw a row of the plane. */
@@ -53,7 +58,20 @@ class MyPlane extends CGFobject {
             this.normals.push(0, 0, 1);
         }
 
-        this.primitiveType = this.scene.gl.TRIANGLE_STRIP;
+        this.texCoords = [];
+
+        for(var i = 0; i <= this.nDivs; i++) {
+            this.texCoords.push(i/this.nDivs,1-i/this.nDivs);
+        }
+
+        /*this.texCoords = [
+            0, 1,
+            1, 1,
+            0, 0,
+            1, 0
+        ];*/
+        
+        this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
     // Drawing the plane

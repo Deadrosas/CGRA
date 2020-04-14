@@ -110,6 +110,6 @@ class MyCylinder extends CGFobject {
 
         // reinitialize buffers
         this.initBuffers();
-        //this.initNormalVizBuffers();
+        this.initNormalVizBuffers();
     }
 }

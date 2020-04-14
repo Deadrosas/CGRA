@@ -10,6 +10,9 @@ class MySphere extends CGFobject {
     this.latDivs = stacks * 2;
     this.longDivs = slices;
 
+    this.earthTexture = new CGFappearance(this.scene);
+    this.earthTexture.loadTexture('images/earth.jpg');
+
     this.initBuffers();
   }
 
@@ -65,9 +68,7 @@ class MySphere extends CGFobject {
         theta += thetaInc;
 
         //--- Texture Coordinates
-        // To be done... 
-        // May need some additional code also in the beginning of the function.
-        
+        this.texCoords.push(longitude/(this.longDivs),latitude/(this.longDivs*2));
       }
       phi += phiInc;
     }
@@ -76,4 +77,15 @@ class MySphere extends CGFobject {
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
   }
+
+  display(){
+
+    this.scene.pushMatrix();
+    this.earthTexture.apply();
+    super.display();
+    this.scene.popMatrix();
+  }
+
+
+
 }

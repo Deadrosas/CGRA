@@ -22,6 +22,8 @@ class MyInterface extends CGFinterface {
         //Slider element in GUI
         this.gui.add(this.scene, 'objectComplexity', 3, 30,1).onChange(this.scene.updateObjectComplexity.bind(this.scene));
         
+        //Choosing elements in GUI
+        this.gui.add(this.scene, 'selectedObject', this.scene.objectIDs).name('Selected Object').onChange();
         return true;
     }
 }

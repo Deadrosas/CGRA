@@ -25,11 +25,21 @@ class MyScene extends CGFscene {
 
         //Initialize scene objects
         this.axis = new CGFaxis(this);
-        this.incompleteSphere = new MySphere(this, 16, 8);
+
+        this.myBackground = new MyBackgroundCube(this);
+
         this.mycylinder = new MyCylinder(this,6);
+        this.mysphere = new MySphere(this, 30, 30);
+
+
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.objectComplexity = 6;
+
+        this.objects = [this.mycylinder, this.mysphere]
+        this.objectIDs = { 'Cylinder': 0, 'Sphere': 1};
+        this.selectedObject = 0;
+        
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -40,12 +50,15 @@ class MyScene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
+    
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
+
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         //To be done...
@@ -75,7 +88,8 @@ class MyScene extends CGFscene {
         // ---- BEGIN Primitive drawing section
 
         //This sphere does not have defined texture coordinates
-        this.mycylinder.display();
+        this.myBackground.display();
+        //this.objects[this.selectedObject].display();
 
         // ---- END Primitive drawing section
     }
