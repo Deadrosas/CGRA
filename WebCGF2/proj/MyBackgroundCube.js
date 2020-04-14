@@ -9,10 +9,10 @@ class MyBackgroundCube extends CGFobject {
         this.scene = scene;
         this.quad = new MyQuad(this.scene);
         this.cubeMaterial = new CGFappearance(this.scene);
-        this.cubeMaterial.setAmbient(1.0, 1.0, 1.0, 1);
+        this.cubeMaterial.setAmbient(10.0, 10.0, 10.0, 1);
         this.cubeMaterial.setDiffuse(1.0, 1.0, 1.0, 1);
         this.cubeMaterial.setSpecular(0.0, 0.0, 0.0, 0.0);
-        this.cubeMaterial.setShininess(10.0);
+        this.cubeMaterial.setShininess(100.0);
 
         this.topTexture = new CGFtexture(this.scene, 'images/split_cubemap/top.png');
         this.bottomTexture = new CGFtexture(this.scene, 'images/split_cubemap/bottom.png');

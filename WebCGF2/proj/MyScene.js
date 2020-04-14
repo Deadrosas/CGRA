@@ -89,7 +89,7 @@ class MyScene extends CGFscene {
 
         //This sphere does not have defined texture coordinates
         this.myBackground.display();
-        //this.objects[this.selectedObject].display();
+        this.objects[this.selectedObject].display();
 
         // ---- END Primitive drawing section
     }
