@@ -46,6 +46,7 @@ class MyCylinder extends CGFobject {
                 this.indices.push(i+this.nDivs);
             }
         }
+        
         for (var i = 1; i < this.nDivs+2; i++) {
             if(i%2 == 0){
                 this.indices.push(i-1);
@@ -88,22 +89,7 @@ class MyCylinder extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
-    // Drawing the plane
-    /*
-    To draw the plane we need to draw the row we defined, nDivs times.
-    Each row must be drawn patchLength lower than the one before it.
-    To draw each row, the drawElements() function is used. This function draws the geometry defined in initBuffers();
-    */
-
-    /*display() {
-        this.scene.pushMatrix();
-        for (var i = 0; i < this.nDivs; i++) {
-            super.display();
-            this.scene.translate(0, -this.patchLength, 0);
-        }
-
-        this.scene.popMatrix();
-    }*/
+    
 
     updateBuffers(complexity){
         this.nDivs =  complexity;

@@ -26,18 +26,19 @@ class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
 
-        this.myBackground = new MyBackgroundCube(this);
+        this.myBackground = new MyBackgroundCube(this, 8, 8);
 
         this.mycylinder = new MyCylinder(this,6);
         this.mysphere = new MySphere(this, 30, 30);
-
-
+        this.myplane = new MyPlane(this, 8, 8);
+        this.myvehicle = new MyVehicle(this, 6, 6);
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.objectComplexity = 6;
+        this.sizeBox = 30;
 
-        this.objects = [this.mycylinder, this.mysphere]
-        this.objectIDs = { 'Cylinder': 0, 'Sphere': 1};
+        this.objects = [this.mycylinder, this.mysphere, this.myplane, this.myvehicle]
+        this.objectIDs = { 'Cylinder': 0, 'Sphere': 1, 'Plane': 2, 'Vehicle': 3};
         this.selectedObject = 0;
         
     }
@@ -66,6 +67,13 @@ class MyScene extends CGFscene {
 
     updateObjectComplexity(){
         this.mycylinder.updateBuffers(this.objectComplexity);
+
+        this.myvehicle.updateBuffers(this.objectComplexity);
+        //this.myplane.updateBuffers(this.objectComplexity, this.sizeBox);
+    }
+
+    updateBoxSize(){
+        //this.MyBackgroundCube.updateBuffers(this.objectComplexity, this.sizeBox);
     }
 
     display() {

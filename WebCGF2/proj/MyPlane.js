@@ -1,10 +1,11 @@
 class MyPlane extends CGFobject {
-    constructor(scene, nDivs) {
+    constructor(scene, nDivs, size) {
         super(scene);
         nDivs = typeof nDivs !== 'undefined' ? nDivs : 1;
 
         this.nDivs = nDivs;
-        this.patchLength = 60 / nDivs;
+        this.size = size;
+        this.patchLength = size / nDivs;
 
         this.initBuffers();
     }
@@ -28,71 +29,75 @@ class MyPlane extends CGFobject {
 
         // Generate vertices
         this.vertices = [];
-        var xCoord = -0.5;
+        /*var xCoord = -size/2;
         for (var i = 0; i <= this.nDivs; i++) {
-            this.vertices.push(xCoord, 0.5, 0);
-            this.vertices.push(xCoord, 0.5 - this.patchLength, 0);
+            this.vertices.push(xCoord, size/2, 0);
+            this.vertices.push(xCoord, size/2 - this.patchLength, 0);
             xCoord += this.patchLength;
-        }
+        }*/
 
-        for (var i = 0; i <= this.nDivs; i++){
-            
+        for (var x = 0; x < this.size; x += this.patchLength) {
+            for (var y = 0; y < this.size; y += this.patchLength) {
+                this.vertices.push(x, y, 0);
+            }
         }
-        
 
         // Generating indices
         /* for nDivs = 3 output will be [0, 1, 2, 3, 4, 5, 6, 7].
         Interpreting this index list as a TRIANGLE_STRIP will draw a row of the plane. */
         this.indices = [];
-        for (var i = 0; i <= 2 * this.nDivs + 1; i++) {
-            this.indices.push(i);
-        }
+        
 
+        for(var i = 0 ; i< this.nDivs - 1; i++){
+            for (var j = 0; j < this.nDivs; j++) {
+                if(j!=this.nDivs-1){
+                    this.indices.push(i*this.nDivs+j);
+                    this.indices.push(i*this.nDivs+j + 1);
+                    this.indices.push(i*this.nDivs+j + this.nDivs);
+                    
+                }  
+                if(j!=0){
+                    this.indices.push(i*this.nDivs+j);
+                    this.indices.push(i*this.nDivs+j + this.nDivs);
+                    this.indices.push(i*this.nDivs+j + this.nDivs -1);
+                    
+                }
+            }
+        } 
+    
         // Generating normals
         /*
         As this plane is being drawn on the xy plane, the normal to the plane will be along the positive z axis.
         So all the vertices will have the same normal, (0, 0, 1).
         */
         this.normals = [];
-        for (var i = 0; i <= 2 * this.nDivs + 1; i++) {
+        for (var i = 0; i <= this.nDivs*this.nDivs; i++) {
             this.normals.push(0, 0, 1);
         }
 
+        
         this.texCoords = [];
 
-        for(var i = 0; i <= this.nDivs; i++) {
-            this.texCoords.push(i/this.nDivs,1-i/this.nDivs);
+        for(var i = 0; i < this.nDivs; i++) {
+            for(var j = 0; j < this.nDivs; j++) {
+                this.texCoords.push((this.patchLength*j)/this.nDivs, this.patchLength*i/this.nDivs);
+            }
         }
-
-        /*this.texCoords = [
-            0, 1,
-            1, 1,
-            0, 0,
-            1, 0
-        ];*/
         
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
-    // Drawing the plane
-    /*
-    To draw the plane we need to draw the row we defined, nDivs times.
-    Each row must be drawn patchLength lower than the one before it.
-    To draw each row, the drawElements() function is used. This function draws the geometry defined in initBuffers();
-    */
+
     display() {
         this.scene.pushMatrix();
-        for (var i = 0; i < this.nDivs; i++) {
-            super.display();
-            this.scene.translate(0, -this.patchLength, 0);
-        }
-
+        this.scene.translate(-this.size/2+this.patchLength/2, this.patchLength/2-this.size/2, 0);
+        super.display();
         this.scene.popMatrix();
     }
 
-    updateBuffers(complexity){
-        this.nDivs = 1 +  Math.round(9 * complexity); //complexity varies 0-1, so nDivs varies 1-10
-        this.patchLength = 1.0 / this. nDivs;
+    updateBuffers(complexity, size){
+        this.nDivs = complexity;
+        this.patchLength = size /  nDivs;
 
         // reinitialize buffers
         this.initBuffers();
