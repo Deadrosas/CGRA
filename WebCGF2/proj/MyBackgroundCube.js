@@ -41,7 +41,9 @@ class MyBackgroundCube extends CGFobject {
         this.cubeMaterial.apply();
         
         this.scene.pushMatrix();
-        this.scene.translate(-this.size/2 + this.patchlenght/2, this.size/2 - this.patchlenght/2, this.size/2);
+        this.scene.translate(0, 0, -this.size/2 + this.patchlenght/2);
+        //this.scene.translate(-this.size/2 + this.patchlenght/2, this.size/2 - this.patchlenght/2, this.size/2);
+        this.scene.rotate(-Math.PI, 0, 1, 0);
         this.scene.rotate(-Math.PI/2, 0, 0, 1);
         this.quad.display();
         this.scene.popMatrix();
@@ -52,8 +54,9 @@ class MyBackgroundCube extends CGFobject {
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
-        this.scene.translate(this.size/2, 0, 0);
-        //this.scene.rotate(Math.PI/2, 0, 1, 0);
+        //this.scene.translate(this.size/2, 0, 0);
+        //this.scene.translate(-this.size/2 + this.patchlenght/2, this.size/2 - this.patchlenght/2, this.size/2);
+        this.scene.rotate(-Math.PI/2, 0, 1, 0);
         this.quad.display();
         this.scene.popMatrix();
 
@@ -77,7 +80,7 @@ class MyBackgroundCube extends CGFobject {
         this.scene.translate(0, 0, -this.size/2);
         this.scene.rotate(-Math.PI/2, 0, 0, 1);
         this.quad.display();
-        this.scene.popMatrix();
+        this.scene.popMatrix();*/
 
         // bottom face
         this.cubeMaterial.setTexture(this.bottomTexture);
@@ -85,12 +88,12 @@ class MyBackgroundCube extends CGFobject {
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
-        this.scene.translate(0, -this.size/2, 0);
-        //this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.scene.translate(0, -this.size/2 + this.patchlenght/2, 0);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.quad.display();
         this.scene.popMatrix();
 
-        // top face
+        /*// top face
         this.cubeMaterial.setTexture(this.topTexture);
         this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.cubeMaterial.apply();
