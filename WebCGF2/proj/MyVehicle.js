@@ -3,17 +3,19 @@
 * @constructor
 */
 class MyVehicle extends CGFobject {
-    constructor(scene, slices, stacks) {
+    constructor(scene, slices, stacks, orientation_vector = [0, 1, 0], position = [0, 0, 0]) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
+        this.orientation_angle = orientation_vector;
+        this.position = position;
+        this.velocity = 0;
         this.initBuffers();
     }
     initBuffers() {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
-
         var ang = 0;
         var alphaAng = 2*Math.PI/this.slices;
 
@@ -68,5 +70,9 @@ class MyVehicle extends CGFobject {
         // reinitialize buffers
         this.initBuffers();
         this.initNormalVizBuffers();
+    }
+    
+    MyVehicleUpdate(){
+        this.position = this.postion + this.velocity*(orientation_vector);
     }
 }
