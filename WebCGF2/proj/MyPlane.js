@@ -48,7 +48,7 @@ class MyPlane extends CGFobject {
         this.indices = [];
         
 
-        for(var i = 0 ; i< this.nDivs - 1; i++){
+        for(var i = 0 ; i < this.nDivs - 1; i++){
             for (var j = 0; j < this.nDivs; j++) {
                 if(j!=this.nDivs-1){
                     this.indices.push(i*this.nDivs+j);
