@@ -32,7 +32,7 @@ class MyScene extends CGFscene {
         this.mycylinder = new MyCylinder(this,6);
         this.mysphere = new MySphere(this, 30, 30);
         this.myplane = new MyPlane(this, 8, 8);
-        this.myvehicle = new MyVehicle(this, 6, 6);
+        this.myvehicle = new MyVehicle(this, 6, 6, [0, 0, 0], 10, 0);
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.objectComplexity = 6;
@@ -50,7 +50,7 @@ class MyScene extends CGFscene {
         this.lights[0].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
     }
     
     setDefaultAppearance() {
@@ -64,20 +64,47 @@ class MyScene extends CGFscene {
         var text="Keys pressed: ";
         var keysPressed=false;
         if (this.gui.isKeyPressed("KeyW")) {
-        text+=" W ";
-        keysPressed=true;
+            this.myvehicle.velocity+=0.01;
+            text += " W "
+            keysPressed=true;
         }
         if (this.gui.isKeyPressed("KeyS")) {
-        text+=" S ";
-        keysPressed=true;
+            this.myvehicle.velocity-=0.01;
+            text+=" S ";
+            keysPressed=true;
         }
-        if (keysPressed)
-        console.log(text);
+        
+        if (this.gui.isKeyPressed("KeyA")) {
+            if(this.myvehicle.orientationLevel<20) {
+                this.myvehicle.orientationLevel++;
+            }
+                console.log(this.myvehicle.orientationLevel);
+                text+=" A ";
+                keysPressed=true;
         }
+
+        if (this.gui.isKeyPressed("KeyD")) {
+            if(this.myvehicle.orientationLevel>0){
+                this.myvehicle.orientationLevel--;
+            }
+            console.log(this.myvehicle.orientationLevel);
+            text+=" D ";
+            keysPressed=true;
+        }
+
+        if (keysPressed){
+            console.log(text);
+        }
+    }
                 
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.checkKeys();
+        this.myvehicle.updateVehicleMovement(t);
+        this.myvehicle.display();
+        console.log("Position: " + this.myvehicle.position + "\n");
+        
+        this.display();
     }
 
     updateObjectComplexity(){

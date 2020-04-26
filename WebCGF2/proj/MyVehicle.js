@@ -1,78 +1,112 @@
 /**
-* MyPyramid
-* @constructor
-*/
+ * MyUnitCubeQuad
+ * @constructor
+ * @param scene - Reference to MyScene object
+ */
 class MyVehicle extends CGFobject {
-    constructor(scene, slices, stacks, orientation_vector = [0, 1, 0], position = [0, 0, 0]) {
+	constructor(scene, nDivs, size, position, orientationLevel, velocity) {
         super(scene);
-        this.slices = slices;
-        this.stacks = stacks;
-        this.orientation_angle = orientation_vector;
+        this.orientationLevel = orientationLevel;
+        this.orientations = [-Math.PI/3/1,-Math.PI/3/2,-Math.PI/3/3,-Math.PI/3/4,-Math.PI/3/5,-Math.PI/3/6,-Math.PI/3/7,-Math.PI/3/8,-Math.PI/3/9,-Math.PI/3/10,0,Math.PI/3/10,Math.PI/3/9,Math.PI/3/8,Math.PI/3/7,Math.PI/3/6,Math.PI/3/5,Math.PI/3/4,Math.PI/3/3,Math.PI/3/2,Math.PI/3/1]
+        this.orientationAngle = 0;
+        this.radiusSize = [-10^0, -10^1, -10^2, -10^3, -10^4, -10^5, -10^6, 10^20, 10^6, 10^5, 10^4, 10^3, 10^2, 10^1, 10^0];
+        //for (int i)
+        /*
+        an = v^2/r
+        W e S aumentam o V
+        A e D aumentam e diminuem o r
+
+
+        
+
+
+
+        */
+
         this.position = position;
-        this.velocity = 0;
-        this.initBuffers();
+        this.velocity = velocity;
+        
+        this.nDivs = 2;
+        this.size = this.nDivs/2;
+        this.patchlenght = this.size / this.nDivs;
+        this.scene = scene;
+        this.quad = new MyPlane(this.scene, this.nDivs, this.size);
     }
-    initBuffers() {
-        this.vertices = [];
-        this.indices = [];
-        this.normals = [];
-        var ang = 0;
-        var alphaAng = 2*Math.PI/this.slices;
 
-        for(var i = 0; i < this.slices; i++){
-            // All vertices have to be declared for a given face
-            // even if they are shared with others, as the normals 
-            // in each face will be different
+    enableNormalViz() {
+        this.quad.enableNormalViz();
+    }
 
-            var sa=Math.sin(ang);
-            var saa=Math.sin(ang+alphaAng);
-            var ca=Math.cos(ang);
-            var caa=Math.cos(ang+alphaAng);
-
-            this.vertices.push(0,1,0);
-            this.vertices.push(ca, 0, -sa);
-            this.vertices.push(caa, 0, -saa);
-
-            // triangle normal computed by cross product of two edges
-            var normal= [
-                saa-sa,
-                ca*saa-sa*caa,
-                caa-ca
-            ];
-
-            // normalization
-            var nsize=Math.sqrt(
-                normal[0]*normal[0]+
-                normal[1]*normal[1]+
-                normal[2]*normal[2]
-                );
-            normal[0]/=nsize;
-            normal[1]/=nsize;
-            normal[2]/=nsize;
-
-            // push normal once for each vertex of this triangle
-            this.normals.push(...normal);
-            this.normals.push(...normal);
-            this.normals.push(...normal);
-
-            this.indices.push(3*i, (3*i+1) , (3*i+2) );
-
-            ang+=alphaAng;
-        }
-
-        this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
+    disableNormalViz() {
+        this.quad.disableNormalViz();
     }
     
-    updateBuffers(complexity){
-        this.slices = complexity; //complexity varies 0-1, so slices varies 3-12
+    display() {
+        //Back face
+        this.scene.pushMatrix();
+        this.scene.translate(-this.size/2 + this.patchlenght/2+this.position[0], 0+this.position[1], 0+this.position[2]);
+        //this.scene.translate(-this.size/2 + this.patchlenght/2, this.size/2 - this.patchlenght/2, this.size/2);
+        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+        this.scene.rotate(Math.PI/2, 0, 1, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+        
+        // left face
 
+        this.scene.pushMatrix();
+        this.scene.translate(0+this.position[0], 0+this.position[1], this.size/2 - this.patchlenght/2+this.position[2]);
+        //this.scene.translate(-this.size/2 + this.patchlenght/2, this.size/2 - this.patchlenght/2, this.size/2);
+        this.scene.rotate(-Math.PI/2, 0, 0, 1);
+        this.scene.rotate(Math.PI, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // right face
+
+        this.scene.pushMatrix();
+        this.scene.translate(0+this.position[0], 0+this.position[1], -this.size/2 + this.patchlenght/2+this.position[2]);
+        this.scene.rotate(-Math.PI/2, 0, 0, 1);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // Front face
+
+        this.scene.pushMatrix();
+        this.scene.translate(this.size/2 - this.patchlenght/2+this.position[0], 0+this.position[1], 0+this.position[2]);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.scene.rotate(-Math.PI/2, 0, 1, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // bottom face
+
+        this.scene.pushMatrix();
+        this.scene.translate(0+this.position[0], +this.size/2 - this.patchlenght/2+this.position[1], 0+this.position[2]);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // top face
+
+        this.scene.pushMatrix();
+        this.scene.translate(0+this.position[0], -this.size/2 + this.patchlenght/2+this.position[1], 0+this.position[2]);
+        this.scene.rotate(Math.PI, 0, 1, 0);
+        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+        
+        this.quad.display();
+        this.scene.popMatrix();
+    }
+
+    /*updateBuffers(complexity, size){
+        this.nDivs =  complexity;
+        this.size = size;
         // reinitialize buffers
         this.initBuffers();
         this.initNormalVizBuffers();
+    }*/
+
+    updateVehicleMovement(t){
+        this.position = [this.position[0]+this.velocity*Math.cos(t), 0, 0];
     }
-    
-    MyVehicleUpdate(){
-        this.position = this.postion + this.velocity*(orientation_vector);
-    }
+
 }
