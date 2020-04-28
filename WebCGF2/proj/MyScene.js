@@ -27,19 +27,20 @@ class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
 
-        this.myBackground = new MyBackgroundCube(this, 24, 24);
+        this.myBackground = new MyBackgroundCube(this, 200, 200);
 
         this.mycylinder = new MyCylinder(this,6);
-        this.mysphere = new MySphere(this, 30, 30);
+        this.myearth = new MyEarth(this, 30, 30);
+        this.myblimp = new MyBlimp(this,50,50);
         this.myplane = new MyPlane(this, 8, 8);
-        this.myvehicle = new MyVehicle(this, 6, 6, [0, 0, 0], 10, 0);
+        this.myvehicle = new MyVehicle(this, 6, 6, [0, 0, 0], 0, 0);
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.objectComplexity = 6;
         this.sizeBox = 30;
 
-        this.objects = [this.mycylinder, this.mysphere, this.myplane, this.myvehicle]
-        this.objectIDs = { 'Cylinder': 0, 'Sphere': 1, 'Plane': 2, 'Vehicle': 3};
+        this.objects = [this.mycylinder, this.myearth, this.myplane, this.myvehicle, this.myblimp];
+        this.objectIDs = { 'Cylinder': 0, 'Earth': 1, 'Plane': 2, 'Vehicle': 3, 'Blimp': 4};
         this.selectedObject = 0;
         
     }
@@ -50,7 +51,7 @@ class MyScene extends CGFscene {
         this.lights[0].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(20, 20, 20), vec3.fromValues(0, 0, 0));
     }
     
     setDefaultAppearance() {
@@ -75,19 +76,15 @@ class MyScene extends CGFscene {
         }
         
         if (this.gui.isKeyPressed("KeyA")) {
-            if(this.myvehicle.orientationLevel<20) {
-                this.myvehicle.orientationLevel++;
-            }
-                console.log(this.myvehicle.orientationLevel);
-                text+=" A ";
-                keysPressed=true;
+            this.myvehicle.orientationAngle-=Math.PI/12
+            console.log(this.myvehicle.orientationAngle);
+            text+=" A ";
+            keysPressed=true;
         }
 
         if (this.gui.isKeyPressed("KeyD")) {
-            if(this.myvehicle.orientationLevel>0){
-                this.myvehicle.orientationLevel--;
-            }
-            console.log(this.myvehicle.orientationLevel);
+            this.myvehicle.orientationAngle+=Math.PI/12
+            console.log(this.myvehicle.orientationAngle);
             text+=" D ";
             keysPressed=true;
         }
@@ -100,11 +97,14 @@ class MyScene extends CGFscene {
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.checkKeys();
-        this.myvehicle.updateVehicleMovement(t);
+        /*this.myvehicle.updateVehicleMovement();
         this.myvehicle.display();
-        console.log("Position: " + this.myvehicle.position + "\n");
-        
-        this.display();
+        console.log("Position: " + this.myvehicle.position + "\n");*/
+        if ((t % 10000000) > 100000) {
+            this.myblimp.helix.rotationlevel++;
+            this.myblimp.display();
+        }
+        //this.display();
     }
 
     updateObjectComplexity(){
@@ -140,6 +140,7 @@ class MyScene extends CGFscene {
         //This sphere does not have defined texture coordinates
         this.myBackground.display();
         this.objects[this.selectedObject].display();
+        //this.myvehicle.display();
 
         // ---- END Primitive drawing section
     }

@@ -10,8 +10,8 @@ class MySphere extends CGFobject {
     this.latDivs = stacks * 2;
     this.longDivs = slices;
 
-    this.earthTexture = new CGFappearance(this.scene);
-    this.earthTexture.loadTexture('images/earth.jpg');
+    //this.earthTexture = new CGFappearance(this.scene);
+    //this.earthTexture.loadTexture('images/earth.jpg');
 
     this.initBuffers();
   }
@@ -79,13 +79,8 @@ class MySphere extends CGFobject {
   }
 
   display(){
-
     this.scene.pushMatrix();
-    this.earthTexture.apply();
     super.display();
     this.scene.popMatrix();
   }
-
-
-
 }

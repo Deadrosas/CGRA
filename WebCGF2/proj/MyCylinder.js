@@ -98,4 +98,11 @@ class MyCylinder extends CGFobject {
         this.initBuffers();
         this.initNormalVizBuffers();
     }
+
+
+    display(){
+        this.scene.pushMatrix();
+        super.display();
+        this.scene.popMatrix();
+    }
 }
