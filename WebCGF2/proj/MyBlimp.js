@@ -12,13 +12,21 @@ class MyBlimp extends CGFobject {
         this.cylinder = new MyCylinder(this.scene, 30);
         this.sphere = new MyEarth(this.scene, 30, 30);
         this.helix = new MyHelix(this.scene, 50, 50, 0);
+
+        this.turning = 0;
+        this.position = [0, 0, 0];
+        this.orientationAngle = 0;
         }
 
        
   
         
     display(){
-        /*//balao
+
+        this.pushMatrix
+        this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        this.scene.rotate(-this.orientationAngle,0,1,0);
+        //balao
         this.scene.pushMatrix();
         this.myellipsoid.display();
         this.scene.popMatrix();
@@ -27,31 +35,35 @@ class MyBlimp extends CGFobject {
         
         //motores
         this.scene.pushMatrix();
-        this.scene.translate(-0.6, -1.05, 0.3);
+        this.scene.translate(-0.65, -1.07, 0.3);
         this.scene.scale(0.1,0.1,0.1);
         this.myellipsoid.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.scene.translate(-0.6, -1.05, -0.3);
+        this.scene.translate(-0.65, -1.07, -0.3);
         this.scene.scale(0.1,0.1,0.1);
         this.myellipsoid.display();
         this.scene.popMatrix();
         //-------------
-        */
+        
         //helices
 
         //Helice 1
         this.scene.pushMatrix();
+        this.scene.translate(-0.85, -1.07, 0.3);
+        this.scene.scale(0.03, 0.03, 0.03);
         this.helix.display();
         this.scene.popMatrix();
         //-------------
         //Helice 2
         this.scene.pushMatrix();
+        this.scene.translate(-0.85, -1.07, -0.3);
+        this.scene.scale(0.03, 0.03, 0.03);
         this.helix.display();
         this.scene.popMatrix();
         // -----------------
-        /*
+        
         //esferas do cabo
         this.scene.pushMatrix();
         this.scene.translate(0.7, -1, 0);
@@ -82,14 +94,16 @@ class MyBlimp extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-0.8,0.3,0);
         this.scene.scale(-1,1,-1);
-        this.scene.rotate(-Math.PI/2,1,0,0)
+        this.scene.rotate(Math.PI/16*this.turning,0,1,0);
+        this.scene.rotate(-Math.PI/2,1,0,0);
         this.rudder.display();
         this.scene.popMatrix();
         
         this.scene.pushMatrix();
         this.scene.translate(-0.8,-0.3,0);
         this.scene.scale(-1,1,-1);
-        this.scene.rotate(Math.PI/2,1,0,0)
+        this.scene.rotate(Math.PI/16*this.turning,0,1,0);
+        this.scene.rotate(Math.PI/2,1,0,0);
         this.rudder.display();
         this.scene.popMatrix();
         // --------------
@@ -101,8 +115,17 @@ class MyBlimp extends CGFobject {
         this.scene.scale(0.2,1.4,0.2);
         this.cylinder.display();
         this.scene.popMatrix();
-        */
         
-
-    }  
+        
+        
+        this.popMatrix
+    }
+    
+    incrementVelocity(velocity, period){
+        console.log(this.position);
+        this.velocity+=(velocity*period);
+        this.position = [this.position[0]+velocity*2*Math.cos(this.orientationAngle), 0, this.position[2]+velocity*2*Math.sin(this.orientationAngle)];
+        this.helix.incrementVelocity(velocity,period);
+    }
+    
   } 

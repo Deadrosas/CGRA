@@ -71,5 +71,5 @@ class MyRudder extends CGFobject {
         this.scene.scale(0.07,0.07,0.07);
         super.display();
         this.scene.popMatrix();
-    }  
+	}
 }
