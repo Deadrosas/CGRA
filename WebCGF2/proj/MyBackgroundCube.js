@@ -11,6 +11,7 @@ class MyBackgroundCube extends CGFobject {
         this.patchlenght = size / nDivs;
         this.scene = scene;
         this.quad = new MyPlane(this.scene, nDivs, size);
+        //this.quad = new MyTerrain(this.scene, nDivs, 0, size, 0, size);
         this.cubeMaterial = new CGFappearance(this.scene);
         this.cubeMaterial.setAmbient(2.5, 2.5, 2.5, 1);
         this.cubeMaterial.setDiffuse(0.5, 0.5, 0.5, 1);

@@ -123,7 +123,6 @@ class MyBlimp extends CGFobject {
     
     incrementVelocity(velocity, period){
         console.log(this.position);
-        this.velocity+=(velocity*period);
         this.position = [this.position[0]+velocity*2*Math.cos(this.orientationAngle), 0, this.position[2]+velocity*2*Math.sin(this.orientationAngle)];
         this.helix.incrementVelocity(velocity,period);
     }

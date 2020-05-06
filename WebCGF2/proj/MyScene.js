@@ -5,6 +5,7 @@
 class MyScene extends CGFscene {
     constructor() {
         super();
+        this.period = 5;
         //this.gui = null;
     }
     init(application) {
@@ -20,9 +21,16 @@ class MyScene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.period = 5;
-
         
+        /*this.testShaders = [
+            new CGFshader(this.gl, "shaders/terrain.vert", "shaders/terrain.frag")
+        ];
+        
+        this.shadersList = {
+            'Terrain': 11
+        }*/
+
+        this.terrainShader = new CGFshader(this.gl, "shaders/terrain.vert", "shaders/terrain.frag");
 
         this.setUpdatePeriod(this.period);
         
@@ -71,12 +79,12 @@ class MyScene extends CGFscene {
         var keysPressed=false;
         
         if (this.gui.isKeyPressed("KeyW")) {
-            this.velocity+=0.0001;
+            this.velocity+=this.period/1000;
             text += " W "
             keysPressed=true;
         }
         if (this.gui.isKeyPressed("KeyS")) {
-            this.velocity-=0.0001;
+            this.velocity-=this.period/1000;
             text+=" S ";
             keysPressed=true;
         }
@@ -84,7 +92,6 @@ class MyScene extends CGFscene {
         if (this.gui.isKeyPressed("KeyA")) {
             this.myblimp.orientationAngle-=(Math.PI/12)*this.period/100;
             this.myblimp.turning = -this.velocity/Math.abs(this.velocity);
-            console.log(this.myblimp.orientationAngle);
             text+=" A ";
             keysPressed=true;
         }
@@ -92,7 +99,6 @@ class MyScene extends CGFscene {
         if (this.gui.isKeyPressed("KeyD")) {
             this.myblimp.orientationAngle+=(Math.PI/12)*this.period/100;
             this.myblimp.turning  = this.velocity/Math.abs(this.velocity);
-            console.log(this.myblimp.orientationAngle);
             text+=" D ";
             keysPressed=true;
         }
@@ -102,6 +108,9 @@ class MyScene extends CGFscene {
             console.log(this.myblimp.orientationAngle);
         }
         
+        if (this.gui.isKeyPressed("KeyR")){
+            this.init(application);
+        }
 
         if (keysPressed){
             console.log(text);
@@ -151,9 +160,13 @@ class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
+        this.setActiveShader(this.terrainShader);
+
         //This sphere does not have defined texture coordinates
         this.myBackground.display();
         this.myblimp.display();
+
+        //this.setActiveShader(this.shadersList[0]);
         //this.myvehicle.display();
 
         // ---- END Primitive drawing section
