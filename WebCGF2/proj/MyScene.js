@@ -5,11 +5,15 @@
 class MyScene extends CGFscene {
     constructor() {
         super();
-        this.period = 5;
         //this.gui = null;
     }
     init(application) {
         super.init(application);
+
+        this.periodFactor = 5;
+        this.cameraZoomFactor = 1;
+        this.cameraZoom = 0;
+
         this.initCameras();
         this.initLights();
 
@@ -32,7 +36,7 @@ class MyScene extends CGFscene {
 
         this.terrainShader = new CGFshader(this.gl, "shaders/terrain.vert", "shaders/terrain.frag");
 
-        this.setUpdatePeriod(this.period);
+        this.setUpdatePeriod(this.periodFactor);
         
         this.enableTextures(true);
 
@@ -55,8 +59,8 @@ class MyScene extends CGFscene {
         this.orientationFactor = 12;
 
         this.myblimp.updateSize(this.scaleFactor);
-        this.myblimp.updateAcceleration(this.speedFactor, this.period);
-        this.myblimp.updateOrientationAngle(this.orientationFactor, this.period);
+        this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
+        this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
         this.velocity = 0;
 
         //this.objects = [this.mycylinder, this.myearth, this.myplane, this.myvehicle, this.myblimp];
@@ -82,54 +86,44 @@ class MyScene extends CGFscene {
     }
 
     checkKeys() {
-        var text="Keys pressed: ";
-        var keysPressed=false;
         
         if (this.gui.isKeyPressed("KeyW")) {
-            //this.velocity+=this.period/1000;
             this.myblimp.accelerate();
-            text += " W "
-            keysPressed=true;
         }
         if (this.gui.isKeyPressed("KeyS")) {
-            //this.velocity-=this.period/1000;
             this.myblimp.decelerate();
-            text+=" S ";
-            keysPressed=true;
         }
         
         if (this.gui.isKeyPressed("KeyA")) {
-            //this.myblimp.orientationAngle-=(Math.PI/12)*this.period/100;
-            //this.myblimp.orient(-(Math.PI/12)*this.period/100);
             this.myblimp.orientLeft();
             this.myblimp.updateTurningLeft();
-            //this.myblimp.turning = -this.velocity/Math.abs(this.velocity);
-            text+=" A ";
-            keysPressed=true;
         }
 
         if (this.gui.isKeyPressed("KeyD")) {
-            //this.myblimp.orientationAngle+=(Math.PI/12)*this.period/100;
-            //this.myblimp.orient((Math.PI/12)*this.period/100);
             this.myblimp.orientRight();
             this.myblimp.updateTurningRight();
-            //this.myblimp.turning = this.velocity/Math.abs(this.velocity);
-            text+=" D ";
-            keysPressed=true;
+        }
+
+        if (this.gui.isKeyPressed("KeyZ")) {
+            this.zoomIn();
+        }
+
+        if (this.gui.isKeyPressed("KeyX")) {
+            this.zoomOut();
+        }
+
+        if (this.gui.isKeyPressed("KeyC")) {
+            this.zoomSetDefault();
         }
 
         if (this.gui.isKeyPressed("KeyA") == this.gui.isKeyPressed("KeyD")){
             this.myblimp.turning = 0;
-            console.log(this.myblimp.orientationAngle);
         }
         
-        if (this.gui.isKeyPressed("KeyR")){
+        /*if (this.gui.isKeyPressed("KeyR")){
             this.init(application);
-        }
+        }*/
 
-        if (keysPressed){
-            console.log(text);
-        }
     }
                 
     // called periodically (as per setUpdatePeriod() in init())
@@ -139,7 +133,7 @@ class MyScene extends CGFscene {
         /*this.myvehicle.updateVehicleMovement();
         this.myvehicle.display();
         console.log("Position: " + this.myvehicle.position + "\n");*/
-        this.myblimp.updatePosition(this.period);
+        this.myblimp.updatePosition(this.periodFactor);
         this.myblimp.display();
         
         //this.display();
@@ -155,16 +149,38 @@ class MyScene extends CGFscene {
         //this.MyBackgroundCube.updateBuffers(this.objectComplexity, this.sizeBox);
     }*/
 
+    zoomIn() {
+        this.camera.zoom(this.cameraZoomFactor);
+        this.cameraZoom += this.cameraZoomFactor;
+    }
+
+    zoomOut() {
+        this.camera.zoom(-this.cameraZoomFactor);
+        this.cameraZoom -= this.cameraZoomFactor;
+    }
+
+    zoomSetDefault() {
+        while (this.cameraZoom != 0) {
+            if (this.cameraZoom > 0) {
+                this.zoomOut();
+            }
+
+            else if (this.cameraZoom < 0) {
+                this.zoomIn();
+            }
+        }
+    }
+
     updateScaleFactor() {
         this.myblimp.updateSize(this.scaleFactor);
     }
 
     updateSpeedFactor() {
-        this.myblimp.updateAcceleration(this.speedFactor, this.period);
+        this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
     }
 
     updateOrientationFactor() {
-        this.myblimp.updateOrientationAngle(this.orientationFactor, this.period);
+        this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
     }
 
     display() {
