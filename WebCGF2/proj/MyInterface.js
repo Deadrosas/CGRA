@@ -20,12 +20,16 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
 
         //Slider element in GUI
-        this.gui.add(this.scene, 'objectComplexity', 4, 32,1).onChange(this.scene.updateObjectComplexity.bind(this.scene));
+        //this.gui.add(this.scene, 'objectComplexity', 4, 32,1).onChange(this.scene.updateObjectComplexity.bind(this.scene));
 
-        this.gui.add(this.scene, 'sizeBox', 5, 100,1).onChange(this.scene.updateBoxSize.bind(this.scene));
+        //this.gui.add(this.scene, 'sizeBox', 5, 100,1).onChange(this.scene.updateBoxSize.bind(this.scene));
+
+        this.gui.add(this.scene, 'scaleFactor', 0, 100,1).onChange(this.scene.updateScaleFactor.bind(this.scene));
+        this.gui.add(this.scene, 'speedFactor', 0, 100,1).onChange(this.scene.updateSpeedFactor.bind(this.scene));
+        this.gui.add(this.scene, 'orientationFactor', 0, 100,1).onChange(this.scene.updateOrientationFactor.bind(this.scene));
         
         //Choosing elements in GUI
-        this.gui.add(this.scene, 'selectedObject', this.scene.objectIDs).name('Selected Object').onChange();
+        //this.gui.add(this.scene, 'selectedObject', this.scene.objectIDs).name('Selected Object').onChange();
         
         this.initKeys();
 

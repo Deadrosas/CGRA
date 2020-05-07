@@ -48,13 +48,20 @@ class MyScene extends CGFscene {
         this.myvehicle = new MyVehicle(this, 6, 6, [0, 0, 0], 0, 0);
         //Objects connected to MyInterface
         this.displayAxis = true;
-        this.objectComplexity = 6;
-        this.sizeBox = 30;
+        //this.objectComplexity = 6;
+        //this.sizeBox = 30;
+        this.scaleFactor = 20;
+        this.speedFactor = 1;
+        this.orientationFactor = 12;
+
+        this.myblimp.updateSize(this.scaleFactor);
+        this.myblimp.updateAcceleration(this.speedFactor, this.period);
+        this.myblimp.updateOrientationAngle(this.orientationFactor, this.period);
         this.velocity = 0;
 
-        this.objects = [this.mycylinder, this.myearth, this.myplane, this.myvehicle, this.myblimp];
-        this.objectIDs = { 'Cylinder': 0, 'Earth': 1, 'Plane': 2, 'Vehicle': 3, 'Blimp': 4};
-        this.selectedObject = 0;
+        //this.objects = [this.mycylinder, this.myearth, this.myplane, this.myvehicle, this.myblimp];
+        //this.objectIDs = { 'Cylinder': 0, 'Earth': 1, 'Plane': 2, 'Vehicle': 3, 'Blimp': 4};
+        //this.selectedObject = 0;
         
     }
     initLights() {
@@ -79,32 +86,40 @@ class MyScene extends CGFscene {
         var keysPressed=false;
         
         if (this.gui.isKeyPressed("KeyW")) {
-            this.velocity+=this.period/1000;
+            //this.velocity+=this.period/1000;
+            this.myblimp.accelerate();
             text += " W "
             keysPressed=true;
         }
         if (this.gui.isKeyPressed("KeyS")) {
-            this.velocity-=this.period/1000;
+            //this.velocity-=this.period/1000;
+            this.myblimp.decelerate();
             text+=" S ";
             keysPressed=true;
         }
         
         if (this.gui.isKeyPressed("KeyA")) {
-            this.myblimp.orientationAngle-=(Math.PI/12)*this.period/100;
-            this.myblimp.turning = -this.velocity/Math.abs(this.velocity);
+            //this.myblimp.orientationAngle-=(Math.PI/12)*this.period/100;
+            //this.myblimp.orient(-(Math.PI/12)*this.period/100);
+            this.myblimp.orientLeft();
+            this.myblimp.updateTurningLeft();
+            //this.myblimp.turning = -this.velocity/Math.abs(this.velocity);
             text+=" A ";
             keysPressed=true;
         }
 
         if (this.gui.isKeyPressed("KeyD")) {
-            this.myblimp.orientationAngle+=(Math.PI/12)*this.period/100;
-            this.myblimp.turning  = this.velocity/Math.abs(this.velocity);
+            //this.myblimp.orientationAngle+=(Math.PI/12)*this.period/100;
+            //this.myblimp.orient((Math.PI/12)*this.period/100);
+            this.myblimp.orientRight();
+            this.myblimp.updateTurningRight();
+            //this.myblimp.turning = this.velocity/Math.abs(this.velocity);
             text+=" D ";
             keysPressed=true;
         }
 
         if (this.gui.isKeyPressed("KeyA") == this.gui.isKeyPressed("KeyD")){
-            this.myblimp.turning  = 0;
+            this.myblimp.turning = 0;
             console.log(this.myblimp.orientationAngle);
         }
         
@@ -120,25 +135,36 @@ class MyScene extends CGFscene {
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.checkKeys();
-        console.log(this.velocity);
+        //console.log(this.velocity);
         /*this.myvehicle.updateVehicleMovement();
         this.myvehicle.display();
         console.log("Position: " + this.myvehicle.position + "\n");*/
-        this.myblimp.incrementVelocity(this.velocity, this.period);
+        this.myblimp.updatePosition(this.period);
         this.myblimp.display();
         
         //this.display();
     }
 
-    updateObjectComplexity(){
+    /*updateObjectComplexity(){
         this.mycylinder.updateBuffers(this.objectComplexity);
 
         this.myvehicle.updateBuffers(this.objectComplexity);
-        //this.myplane.updateBuffers(this.objectComplexity, this.sizeBox);
+    }*/
+
+    /*updateBoxSize(){
+        //this.MyBackgroundCube.updateBuffers(this.objectComplexity, this.sizeBox);
+    }*/
+
+    updateScaleFactor() {
+        this.myblimp.updateSize(this.scaleFactor);
     }
 
-    updateBoxSize(){
-        //this.MyBackgroundCube.updateBuffers(this.objectComplexity, this.sizeBox);
+    updateSpeedFactor() {
+        this.myblimp.updateAcceleration(this.speedFactor, this.period);
+    }
+
+    updateOrientationFactor() {
+        this.myblimp.updateOrientationAngle(this.orientationFactor, this.period);
     }
 
     display() {
@@ -160,7 +186,7 @@ class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
-        this.setActiveShader(this.terrainShader);
+        //this.setActiveShader(this.terrainShader);
 
         //This sphere does not have defined texture coordinates
         this.myBackground.display();
