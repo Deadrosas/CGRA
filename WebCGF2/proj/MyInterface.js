@@ -25,7 +25,7 @@ class MyInterface extends CGFinterface {
         //this.gui.add(this.scene, 'sizeBox', 5, 100,1).onChange(this.scene.updateBoxSize.bind(this.scene));
 
         var sceneFolder = this.gui.addFolder('Scene');
-        sceneFolder.add(this.scene, 'periodFactor', 1, 50,1).onChange(this.scene.setUpdatePeriod.bind(this.scene));;
+        sceneFolder.add(this.scene, 'periodFactor', 1, 50,1).onChange(this.scene.updatePeriodFactor.bind(this.scene));;
 
         var blimpFolder = this.gui.addFolder('Blimp');
         blimpFolder.add(this.scene, 'scaleFactor', 1, 100,1).onChange(this.scene.updateScaleFactor.bind(this.scene));

@@ -57,10 +57,17 @@ class MyScene extends CGFscene {
         this.scaleFactor = 20;
         this.speedFactor = 1;
         this.orientationFactor = 12;
+        this.previousT = 0
+        this.period = 0;
+
+        this.blimpAcceleration = 0;
+        this.blimpAngle = 0
 
         this.myblimp.updateSize(this.scaleFactor);
-        this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
-        this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
+        //this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
+        //this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
+        this.updateSpeedFactor();
+        this.updateOrientationFactor();
         this.velocity = 0;
 
         //this.objects = [this.mycylinder, this.myearth, this.myplane, this.myvehicle, this.myblimp];
@@ -88,20 +95,32 @@ class MyScene extends CGFscene {
     checkKeys() {
         
         if (this.gui.isKeyPressed("KeyW")) {
-            this.myblimp.accelerate();
+            console.log("Period: " + this.period);
+            if (!this.myblimp.isAutoPilot())
+                this.myblimp.accelerate(this.blimpAcceleration);
         }
+
         if (this.gui.isKeyPressed("KeyS")) {
-            this.myblimp.decelerate();
+            if (!this.myblimp.isAutoPilot())
+                this.myblimp.accelerate(-this.blimpAcceleration);
         }
         
         if (this.gui.isKeyPressed("KeyA")) {
-            this.myblimp.orientLeft();
-            this.myblimp.updateTurningLeft();
+            if (!this.myblimp.isAutoPilot())
+                this.myblimp.turn(-this.blimpAngle);
         }
 
         if (this.gui.isKeyPressed("KeyD")) {
-            this.myblimp.orientRight();
-            this.myblimp.updateTurningRight();
+            if (!this.myblimp.isAutoPilot())
+                this.myblimp.turn(this.blimpAngle);
+        }
+
+        if (this.gui.isKeyPressed("KeyP")) {
+            this.myblimp.setAutoPilot(true);
+        }
+
+        if (this.gui.isKeyPressed("KeyR")) {
+            this.myblimp.reset();
         }
 
         if (this.gui.isKeyPressed("KeyZ")) {
@@ -116,7 +135,7 @@ class MyScene extends CGFscene {
             this.zoomSetDefault();
         }
 
-        if (this.gui.isKeyPressed("KeyA") == this.gui.isKeyPressed("KeyD")){
+        if (this.gui.isKeyPressed("KeyA") == this.gui.isKeyPressed("KeyD")) {
             this.myblimp.turning = 0;
         }
         
@@ -128,12 +147,16 @@ class MyScene extends CGFscene {
                 
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
+        this.period = t - this.previousT;
+        this.previousT = t;
+        console.log(this.period);
         this.checkKeys();
         //console.log(this.velocity);
         /*this.myvehicle.updateVehicleMovement();
         this.myvehicle.display();
         console.log("Position: " + this.myvehicle.position + "\n");*/
-        this.myblimp.updatePosition(this.periodFactor);
+
+        this.myblimp.updatePosition(this.period);
         this.myblimp.display();
         
         //this.display();
@@ -171,16 +194,25 @@ class MyScene extends CGFscene {
         }
     }
 
+    updatePeriodFactor() {
+        this.setUpdatePeriod(this.periodFactor);
+        this.updateSpeedFactor();
+        this.updateOrientationFactor();
+    }
+
     updateScaleFactor() {
         this.myblimp.updateSize(this.scaleFactor);
     }
 
     updateSpeedFactor() {
-        this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
+        //this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
+        this.blimpAcceleration = this.speedFactor/(this.period*100);
+        console.log("acceleration: " + this.blimpAcceleration);
     }
 
     updateOrientationFactor() {
-        this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
+        //this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
+        this.blimpAngle = (Math.PI*this.orientationFactor/100)*this.period;
     }
 
     display() {

@@ -22,12 +22,9 @@ class MyBlimp extends CGFobject {
         this.position = [0, 0, 0];
         this.orientationAngle = 0;
 
+        this.autoPilot = false;
+    }
 
-        }
-
-       
-  
-        
     display(){
 
         this.scene.pushMatrix();
@@ -127,38 +124,33 @@ class MyBlimp extends CGFobject {
         this.scene.popMatrix();
     }
 
-    accelerate() {
-        //this.velocity += acceleration;
-        this.velocity += this.acceleration;
+    setAutoPilot(newAutoPilot) {
+        this.autoPilot = newAutoPilot;
     }
 
-    decelerate() {
-        this.velocity -= this.acceleration;
+    isAutoPilot() {
+        return this.autoPilot;
     }
 
-    orient(angle) {
-        this.orientationAngle += angle;
+    calculateAutoPilotCenter() {
+        return [this.position[0]]
     }
 
-    orientLeft() {
-        this.orientationAngle -= this.angle;
+    accelerate(val) {
+        this.velocity += val;
     }
 
-    orientRight() {
-        this.orientationAngle += this.angle;
-    }
-
-    updateTurningLeft() {
-        this.turning = -this.velocity/Math.abs(this.velocity);
-    }
-
-    updateTurningRight() {
-        this.turning = this.velocity/Math.abs(this.velocity);
+    turn(val) {
+        if (val < 0)
+            this.turning = -this.velocity/Math.abs(this.velocity);
+        else
+            this.turning = this.velocity/Math.abs(this.velocity);
+        this.orientationAngle += val;
     }
     
     updatePosition(period) {
-        console.log(this.position);
-        this.position = [this.position[0]+this.velocity*2*Math.cos(this.orientationAngle), 0, this.position[2]+this.velocity*2*Math.sin(this.orientationAngle)];
+        //console.log(this.position);
+        this.position = [this.position[0]+this.velocity*Math.cos(this.orientationAngle), 0, this.position[2]+this.velocity*Math.sin(this.orientationAngle)];
         this.helix.updatePosition(this.velocity, period);
     }
 
@@ -166,11 +158,10 @@ class MyBlimp extends CGFobject {
         this.size = scaleFactor/10;
     }
 
-    updateAcceleration(speedFactor, period) {
-        this.acceleration = period*speedFactor/10000;
+    reset() {
+        this.velocity = 0;
+        this.turning = 0;
+        this.position = [0, 0, 0];
+        this.orientationAngle = 0;
     }
-
-    updateOrientationAngle(orientationFactor, period) {
-        this.angle = (Math.PI*orientationFactor/100)*period/100
-    }
-  } 
+} 
