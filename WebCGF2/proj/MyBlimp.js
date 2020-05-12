@@ -13,17 +13,22 @@ class MyBlimp extends CGFobject {
         this.sphere = new MyEarth(this.scene, 30, 30);
         this.helix = new MyHelix(this.scene, 50, 50, 0);
 
+        this.size = null;
+        this.acceleration = null;
+        this.angle = null;
+
+        this.velocity = 0;
         this.turning = 0;
         this.position = [0, 0, 0];
         this.orientationAngle = 0;
-        }
 
-       
-  
-        
+        this.autoPilot = false;
+    }
+
     display(){
 
-        this.pushMatrix
+        this.scene.pushMatrix();
+        this.scene.scale(this.size, this.size, this.size);
         this.scene.translate(this.position[0], this.position[1], this.position[2]);
         this.scene.rotate(-this.orientationAngle,0,1,0);
         //balao
@@ -115,16 +120,48 @@ class MyBlimp extends CGFobject {
         this.scene.scale(0.2,1.4,0.2);
         this.cylinder.display();
         this.scene.popMatrix();
-        
-        
-        
-        this.popMatrix
+
+        this.scene.popMatrix();
+    }
+
+    setAutoPilot(newAutoPilot) {
+        this.autoPilot = newAutoPilot;
+    }
+
+    isAutoPilot() {
+        return this.autoPilot;
+    }
+
+    calculateAutoPilotCenter() {
+        return [this.position[0]]
+    }
+
+    accelerate(val) {
+        this.velocity += val;
+    }
+
+    turn(val) {
+        if (val < 0)
+            this.turning = -this.velocity/Math.abs(this.velocity);
+        else
+            this.turning = this.velocity/Math.abs(this.velocity);
+        this.orientationAngle += val;
     }
     
-    incrementVelocity(velocity, period){
-        console.log(this.position);
-        this.position = [this.position[0]+velocity*2*Math.cos(this.orientationAngle), 0, this.position[2]+velocity*2*Math.sin(this.orientationAngle)];
-        this.helix.incrementVelocity(velocity,period);
+    updatePosition(period) {
+        //console.log(this.position);
+        this.position = [this.position[0]+this.velocity*Math.cos(this.orientationAngle), 0, this.position[2]+this.velocity*Math.sin(this.orientationAngle)];
+        this.helix.updatePosition(this.velocity, period);
     }
-    
-  } 
+
+    updateSize(scaleFactor) {
+        this.size = scaleFactor/10;
+    }
+
+    reset() {
+        this.velocity = 0;
+        this.turning = 0;
+        this.position = [0, 0, 0];
+        this.orientationAngle = 0;
+    }
+} 

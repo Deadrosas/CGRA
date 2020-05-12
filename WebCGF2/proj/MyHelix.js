@@ -34,7 +34,7 @@ class MyHelix extends CGFobject {
         
     }
 
-    incrementVelocity(v, period) {
-        this.rotationlevel += (v*period);
+    updatePosition(velocity, period) {
+        this.rotationlevel += (velocity*period);
     }
 }

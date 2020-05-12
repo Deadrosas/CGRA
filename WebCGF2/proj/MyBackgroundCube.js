@@ -18,12 +18,12 @@ class MyBackgroundCube extends CGFobject {
         this.cubeMaterial.setSpecular(0.2, 0.2, 0.2, 0.2);
         this.cubeMaterial.setShininess(10.0);
 
-        this.topTexture = new CGFtexture(this.scene, 'images/split_cubemap3/top.png');
-        this.bottomTexture = new CGFtexture(this.scene, 'images/split_cubemap3/bottom.png');
-        this.backTexture = new CGFtexture(this.scene, 'images/split_cubemap3/back.png');
-        this.frontTexture = new CGFtexture(this.scene, 'images/split_cubemap3/front.png');
-        this.leftTexture = new CGFtexture(this.scene, 'images/split_cubemap3/left.png');
-        this.rightTexture = new CGFtexture(this.scene, 'images/split_cubemap3/right.png');
+        this.topTexture = new CGFtexture(this.scene, 'images/split_cubemap4/top.png');
+        this.bottomTexture = new CGFtexture(this.scene, 'images/split_cubemap4/bottom.png');
+        this.backTexture = new CGFtexture(this.scene, 'images/split_cubemap4/back.png');
+        this.frontTexture = new CGFtexture(this.scene, 'images/split_cubemap4/front.png');
+        this.leftTexture = new CGFtexture(this.scene, 'images/split_cubemap4/left.png');
+        this.rightTexture = new CGFtexture(this.scene, 'images/split_cubemap4/right.png');
     }
 
     enableNormalViz() {
@@ -38,7 +38,7 @@ class MyBackgroundCube extends CGFobject {
 
         //Back face
         this.cubeMaterial.setTexture(this.backTexture);
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         this.cubeMaterial.apply();
         
         this.scene.pushMatrix();
@@ -51,7 +51,7 @@ class MyBackgroundCube extends CGFobject {
         
         // left face
         this.cubeMaterial.setTexture(this.leftTexture);
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
@@ -64,7 +64,7 @@ class MyBackgroundCube extends CGFobject {
 
         // right face
         this.cubeMaterial.setTexture(this.rightTexture);
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
@@ -75,7 +75,7 @@ class MyBackgroundCube extends CGFobject {
 
         // Front face
         this.cubeMaterial.setTexture(this.frontTexture);
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
@@ -87,7 +87,7 @@ class MyBackgroundCube extends CGFobject {
 
         // bottom face
         this.cubeMaterial.setTexture(this.bottomTexture);
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
@@ -98,7 +98,7 @@ class MyBackgroundCube extends CGFobject {
 
         // top face
         this.cubeMaterial.setTexture(this.topTexture);
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         this.cubeMaterial.apply();
 
         this.scene.pushMatrix();
@@ -109,7 +109,7 @@ class MyBackgroundCube extends CGFobject {
         this.quad.display();
         this.scene.popMatrix();
 
-        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
+        //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
     }
 
     updateBuffers(complexity, size){
