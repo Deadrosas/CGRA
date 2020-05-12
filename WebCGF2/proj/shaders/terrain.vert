@@ -14,7 +14,7 @@ uniform sampler2D uSampler2;
 void main() {
 
 	vec4 color = texture2D(uSampler, aTextureCoord);
-	vec4 filter = texture2D(uSampler2, vec2(0.0,0.1)+aTextureCoord);
+	vec4 filter = texture2D(uSampler2, vec2(0.0,0.0)+aTextureCoord);
 
 	vec3 offset = vec3(0.0,0.0,0.0);
 

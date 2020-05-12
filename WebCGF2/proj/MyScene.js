@@ -34,7 +34,20 @@ class MyScene extends CGFscene {
             'Terrain': 11
         }*/
 
+        this.terrainAppearance = new CGFappearance(this);
+		this.terrainAppearance.setAmbient(0.3, 0.3, 0.3, 1);
+		this.terrainAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
+		this.terrainAppearance.setSpecular(0.0, 0.0, 0.0, 1);
+		this.terrainAppearance.setShininess(120);
+
+        this.terrainTexture = new CGFtexture(this, "images/terrain.jpg");
+        this.terrainAppearance.setTexture(this.terrainTexture);
+        this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
+        this.terrainHeightTexture = new CGFtexture(this, "images/heightmap - Copy.jpg");
+
         this.terrainShader = new CGFshader(this.gl, "shaders/terrain.vert", "shaders/terrain.frag");
+
+        this.terrainShader.setUniformsValues({uSampler2: 1});
 
         this.setUpdatePeriod(this.periodFactor);
         
@@ -45,18 +58,22 @@ class MyScene extends CGFscene {
 
         this.myBackground = new MyBackgroundCube(this, 200, 200);
 
-        this.mycylinder = new MyCylinder(this,6);
+        /*this.mycylinder = new MyCylinder(this,6);
         this.myearth = new MyEarth(this, 30, 30);
-        this.myblimp = new MyBlimp(this,50,50);
-        this.myplane = new MyPlane(this, 8, 8);
         this.myvehicle = new MyVehicle(this, 6, 6, [0, 0, 0], 0, 0);
+        this.myplane = new MyPlane(this, 8, 8);
+        */
+
+        this.myblimp = new MyBlimp(this,50,50);
+        this.terrain = new MyTerrain(this, 50);
         //Objects connected to MyInterface
+        this.scaleFactor = 20;
+        this.speedFactor = 10;
+        this.orientationFactor = 10;
         this.displayAxis = true;
         //this.objectComplexity = 6;
         //this.sizeBox = 30;
-        this.scaleFactor = 20;
-        this.speedFactor = 1;
-        this.orientationFactor = 12;
+        
         this.previousT = 0
         this.period = 0;
 
@@ -66,9 +83,7 @@ class MyScene extends CGFscene {
         this.myblimp.updateSize(this.scaleFactor);
         //this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
         //this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
-        this.updateSpeedFactor();
-        this.updateOrientationFactor();
-        this.velocity = 0;
+        
 
         //this.objects = [this.mycylinder, this.myearth, this.myplane, this.myvehicle, this.myblimp];
         //this.objectIDs = { 'Cylinder': 0, 'Earth': 1, 'Plane': 2, 'Vehicle': 3, 'Blimp': 4};
@@ -150,16 +165,12 @@ class MyScene extends CGFscene {
         this.period = t - this.previousT;
         this.previousT = t;
         console.log(this.period);
+
         this.checkKeys();
-        //console.log(this.velocity);
-        /*this.myvehicle.updateVehicleMovement();
-        this.myvehicle.display();
-        console.log("Position: " + this.myvehicle.position + "\n");*/
 
         this.myblimp.updatePosition(this.period);
         this.myblimp.display();
         
-        //this.display();
     }
 
     /*updateObjectComplexity(){
@@ -206,13 +217,13 @@ class MyScene extends CGFscene {
 
     updateSpeedFactor() {
         //this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
-        this.blimpAcceleration = this.speedFactor/(this.period*100);
+        this.blimpAcceleration = this.speedFactor*this.period/10000;
         console.log("acceleration: " + this.blimpAcceleration);
     }
 
     updateOrientationFactor() {
         //this.myblimp.updateOrientationAngle(this.orientationFactor, this.periodFactor);
-        this.blimpAngle = (Math.PI*this.orientationFactor/100)*this.period;
+        this.blimpAngle = (Math.PI*this.orientationFactor/10000)*this.period;
     }
 
     display() {
@@ -232,16 +243,40 @@ class MyScene extends CGFscene {
 
         this.setDefaultAppearance();
 
+
+        
+
+		// activate selected shader
+
+
         // ---- BEGIN Primitive drawing section
+        this.updatePeriodFactor();
+        this.updateSpeedFactor();
+        this.updateOrientationFactor();
+        
 
         //this.setActiveShader(this.terrainShader);
 
-        //This sphere does not have defined texture coordinates
         this.myBackground.display();
         this.myblimp.display();
 
-        //this.setActiveShader(this.shadersList[0]);
-        //this.myvehicle.display();
+        
+        
+        this.terrainAppearance.apply();
+        
+        this.terrainHeightTexture.bind(1);
+
+        this.setActiveShader(this.terrainShader);
+        this.pushMatrix();
+        
+
+        this.translate(0,-100,0);
+        this.rotate(-Math.PI/2,1,0,0);
+        this.scale(200,200,50);
+        this.terrain.display();
+        this.popMatrix();
+
+        this.setActiveShader(this.defaultShader);
 
         // ---- END Primitive drawing section
     }

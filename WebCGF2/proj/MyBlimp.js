@@ -141,6 +141,9 @@ class MyBlimp extends CGFobject {
     }
 
     turn(val) {
+        if (this.velocity == 0) {
+            return;
+        }
         if (val < 0)
             this.turning = -this.velocity/Math.abs(this.velocity);
         else
