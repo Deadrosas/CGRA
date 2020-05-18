@@ -7,11 +7,8 @@ class MyEllipsoid extends CGFobject {
    */
   constructor(scene, slices, stacks) {
     super(scene);
-    this.blimpMaterial = new CGFappearance(this.scene);
-    this.blimpMaterial.setAmbient(2.5, 2.5, 2.5, 1);
-    this.blimpMaterial.setDiffuse(0.5, 0.5, 0.5, 1);
-    this.blimpMaterial.setSpecular(0.2, 0.2, 0.2, 0.2);
-    this.blimpMaterial.setShininess(10.0);
+    //this.blimpMaterial = new CGFappearance(this.scene);
+    //this.blimpMaterial.loadTexture('images/nuclear4.png');
 
     this.mysphere = new MySphere(this.scene, slices, stacks)
   }
@@ -20,7 +17,7 @@ class MyEllipsoid extends CGFobject {
   
   display(){
     this.scene.pushMatrix();
-    this.blimpMaterial.apply();
+    //this.blimpMaterial.apply();
     this.scene.scale(2,1,1);
     this.mysphere.display();
     this.scene.popMatrix();
