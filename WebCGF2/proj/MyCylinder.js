@@ -76,15 +76,15 @@ class MyCylinder extends CGFobject {
         */
 
         
-       this.normals = [];
-       for (var i = 0; i <= this.nDivs; i++) {
+        this.normals = [];
+        for (var i = 0; i <= this.nDivs; i++) {
            this.normals.push(Math.cos(i*2*Math.PI/this.nDivs), 0, Math.sin(i*2*Math.PI/this.nDivs));
-       }
+        }
 
-       for (var i = 0; i <= this.nDivs; i++) {
-           this.normals.push(Math.cos(i*2*Math.PI/this.nDivs), 0, Math.sin(i*2*Math.PI/this.nDivs));
-       }
-        
+        this.texCoords = []
+        for (var i = 0; i < this.nDivs; i++) {
+            this.texCoords.push(Math.cos(i*Math.PI/this.nDivs), Math.sin(i*Math.PI/this.nDivs));
+        }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
@@ -92,17 +92,10 @@ class MyCylinder extends CGFobject {
     
 
     updateBuffers(complexity){
-        this.nDivs =  complexity;
+        this.nDivs = complexity;
 
         // reinitialize buffers
         this.initBuffers();
         this.initNormalVizBuffers();
-    }
-
-
-    display(){
-        this.scene.pushMatrix();
-        super.display();
-        this.scene.popMatrix();
     }
 }

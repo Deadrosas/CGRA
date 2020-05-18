@@ -7,10 +7,13 @@ class MyBlimp extends CGFobject {
      */
     constructor(scene, slices, stacks) {
         super(scene);
-        this.myellipsoid = new MyEllipsoid(this.scene, slices, stacks)
+        this.blimpMaterial = new CGFappearance(this.scene);
+        this.blimpMaterial.loadTexture('images/nuclear4.png');
+    
+        this.myellipsoid = new MyEllipsoid(this.scene, slices, stacks);
         this.rudder = new MyRudder(this.scene);
         this.cylinder = new MyCylinder(this.scene, 30);
-        this.sphere = new MyEarth(this.scene, 30, 30);
+        this.sphere = new MySphere(this.scene, 30, 30);
         this.helix = new MyHelix(this.scene, 50, 50, 0);
 
         this.size = null;
@@ -26,7 +29,7 @@ class MyBlimp extends CGFobject {
     }
 
     display(){
-
+        this.blimpMaterial.apply();
         this.scene.pushMatrix();
         this.scene.scale(this.size, this.size, this.size);
         this.scene.translate(this.position[0], this.position[1], this.position[2]);
@@ -116,7 +119,8 @@ class MyBlimp extends CGFobject {
         //cilindro passageiro
         this.scene.pushMatrix();
         this.scene.translate(-0.7,-1,0);
-        this.scene.rotate(-Math.PI/2,0,0,1)
+        this.scene.rotate(Math.PI/2,1,0,0);
+        this.scene.rotate(-Math.PI/2,0,0,1);
         this.scene.scale(0.2,1.4,0.2);
         this.cylinder.display();
         this.scene.popMatrix();
