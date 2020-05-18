@@ -28,9 +28,9 @@ class MyInterface extends CGFinterface {
         sceneFolder.add(this.scene, 'periodFactor', 1, 50,1).onChange(this.scene.updatePeriodFactor.bind(this.scene));;
 
         var blimpFolder = this.gui.addFolder('Blimp');
-        blimpFolder.add(this.scene, 'scaleFactor', 1, 100,1).onChange(this.scene.updateScaleFactor.bind(this.scene));
-        blimpFolder.add(this.scene, 'speedFactor', 1, 100,1).onChange(this.scene.updateSpeedFactor.bind(this.scene));
-        blimpFolder.add(this.scene, 'orientationFactor', 1, 100,1).onChange(this.scene.updateOrientationFactor.bind(this.scene));
+        blimpFolder.add(this.scene, 'scaleFactor', 1, 100, 1).onChange(this.scene.updateScaleFactor.bind(this.scene));
+        blimpFolder.add(this.scene, 'speedFactor', 1, 100, 1).onChange(this.scene.updateSpeedFactor.bind(this.scene));
+        blimpFolder.add(this.scene, 'orientationFactor', 1, 50, 1).onChange(this.scene.updateOrientationFactor.bind(this.scene));
         
         //Choosing elements in GUI
         //this.gui.add(this.scene, 'selectedObject', this.scene.objectIDs).name('Selected Object').onChange();
