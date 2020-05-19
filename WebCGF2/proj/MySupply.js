@@ -93,7 +93,7 @@ class MySupply extends CGFobject {
     }
 
     launch() {
-        this.
+        this.currentState = SupplyStates.FALLING;
     }
 
     
