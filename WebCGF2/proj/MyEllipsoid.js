@@ -10,7 +10,7 @@ class MyEllipsoid extends CGFobject {
     //this.blimpMaterial = new CGFappearance(this.scene);
     //this.blimpMaterial.loadTexture('images/nuclear4.png');
 
-    this.mysphere = new MySphere(this.scene, slices, stacks)
+    this.mysphere = new MySphere(this.scene, slices, stacks);
   }
   
 

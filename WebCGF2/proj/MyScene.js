@@ -56,7 +56,7 @@ class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
 
-        this.myBackground = new MyBackgroundCube(this, 200, 200);
+        this.myBackground = new MyBackgroundCube(this, 50, 50);
 
         /*this.mycylinder = new MyCylinder(this,6);
         this.myearth = new MyEarth(this, 30, 30);
@@ -66,15 +66,18 @@ class MyScene extends CGFscene {
 
         this.myblimp = new MyBlimp(this,50,50);
         this.terrain = new MyTerrain(this, 50);
+        this.mysupply = new MySupply(this, 10, 10, this.myblimp.position);
         //Objects connected to MyInterface
-        this.scaleFactor = 20;
+        this.scaleFactor = 10;
         this.speedFactor = 10;
         this.orientationFactor = 10;
         this.displayAxis = true;
         //this.objectComplexity = 6;
         //this.sizeBox = 30;
         
-        this.previousT = 0
+        var d = new Date();
+        var n = d.getTime();
+        this.previousT = n;
         this.period = 0;
 
         this.blimpAcceleration = 0;
@@ -134,6 +137,10 @@ class MyScene extends CGFscene {
             this.myblimp.setAutoPilot(true);
         }
 
+        if (this.gui.isKeyPressed("KeyL")) {
+            this.mysupply.launch();
+        }
+
         if (this.gui.isKeyPressed("KeyR")) {
             this.myblimp.reset();
         }
@@ -162,14 +169,20 @@ class MyScene extends CGFscene {
                 
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
-        this.period = t - this.previousT;
-        this.previousT = t;
-        console.log(this.period);
+        var d = new Date();
+        var n = d.getTime();
+        this.period = n - this.previousT;
+        this.previousT = n;
+        //console.log(this.period);
 
         this.checkKeys();
 
         this.myblimp.updatePosition(this.period);
         this.myblimp.display();
+
+        this.mysupply.updatePosition(this.period);
+        this.mysupply.display();
+
         
     }
 
@@ -218,7 +231,6 @@ class MyScene extends CGFscene {
     updateSpeedFactor() {
         //this.myblimp.updateAcceleration(this.speedFactor, this.periodFactor);
         this.blimpAcceleration = this.speedFactor*this.period/10000;
-        console.log("acceleration: " + this.blimpAcceleration);
     }
 
     updateOrientationFactor() {
@@ -258,8 +270,11 @@ class MyScene extends CGFscene {
         //this.setActiveShader(this.terrainShader);
 
         this.myBackground.display();
-        this.myblimp.display();
-
+        //this.myblimp.display();
+        this.pushMatrix();
+        this.scale(0.4,0.4,0.4);
+        this.mysupply.display();
+        this.popMatrix();
         
         
         this.terrainAppearance.apply();
@@ -270,9 +285,9 @@ class MyScene extends CGFscene {
         this.pushMatrix();
         
 
-        this.translate(0,-100,0);
+        this.translate(0,-25,0);
         this.rotate(-Math.PI/2,1,0,0);
-        this.scale(200,200,50);
+        this.scale(50,50,8);
         this.terrain.display();
         this.popMatrix();
 
