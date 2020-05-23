@@ -18,12 +18,12 @@ class MyBackgroundCube extends CGFobject {
         this.cubeMaterial.setSpecular(0.2, 0.2, 0.2, 0.2);
         this.cubeMaterial.setShininess(10.0);
 
-        this.topTexture = new CGFtexture(this.scene, 'images/split_cubemap4/top.png');
-        this.bottomTexture = new CGFtexture(this.scene, 'images/split_cubemap4/bottom.png');
-        this.backTexture = new CGFtexture(this.scene, 'images/split_cubemap4/back.png');
-        this.frontTexture = new CGFtexture(this.scene, 'images/split_cubemap4/front.png');
-        this.leftTexture = new CGFtexture(this.scene, 'images/split_cubemap4/left.png');
-        this.rightTexture = new CGFtexture(this.scene, 'images/split_cubemap4/right.png');
+        this.topTexture = new CGFtexture(this.scene, 'images/split_cubemap3/top.png');
+        this.bottomTexture = new CGFtexture(this.scene, 'images/split_cubemap3/bottom.png');
+        this.backTexture = new CGFtexture(this.scene, 'images/split_cubemap3/back.png');
+        this.frontTexture = new CGFtexture(this.scene, 'images/split_cubemap3/front.png');
+        this.leftTexture = new CGFtexture(this.scene, 'images/split_cubemap3/left.png');
+        this.rightTexture = new CGFtexture(this.scene, 'images/split_cubemap3/right.png');
     }
 
     enableNormalViz() {

@@ -58,15 +58,11 @@ class MyScene extends CGFscene {
 
         this.myBackground = new MyBackgroundCube(this, 50, 50);
 
-        /*this.mycylinder = new MyCylinder(this,6);
-        this.myearth = new MyEarth(this, 30, 30);
-        this.myvehicle = new MyVehicle(this, 6, 6, [0, 0, 0], 0, 0);
-        this.myplane = new MyPlane(this, 8, 8);
-        */
-
         this.myblimp = new MyBlimp(this,50,50);
         this.terrain = new MyTerrain(this, 50);
-        this.mysupply = new MySupply(this, 10, 10, this.myblimp.position);
+        
+
+
         //Objects connected to MyInterface
         this.scaleFactor = 10;
         this.speedFactor = 10;
@@ -79,6 +75,8 @@ class MyScene extends CGFscene {
         var n = d.getTime();
         this.previousT = n;
         this.period = 0;
+
+        this.dropReleaseRate = 3000;
 
         this.blimpAcceleration = 0;
         this.blimpAngle = 0
@@ -113,7 +111,6 @@ class MyScene extends CGFscene {
     checkKeys() {
         
         if (this.gui.isKeyPressed("KeyW")) {
-            console.log("Period: " + this.period);
             if (!this.myblimp.isAutoPilot())
                 this.myblimp.accelerate(this.blimpAcceleration);
         }
@@ -138,7 +135,11 @@ class MyScene extends CGFscene {
         }
 
         if (this.gui.isKeyPressed("KeyL")) {
-            this.mysupply.launch();
+            if(this.dropReleaseRate>1000){
+                this.myblimp.dropSupply();
+                this.dropReleaseRate = 0;
+            }
+            
         }
 
         if (this.gui.isKeyPressed("KeyR")) {
@@ -169,21 +170,25 @@ class MyScene extends CGFscene {
                 
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
+        
+        console.log("scene period: " + this.period);
+
+        
+
         var d = new Date();
         var n = d.getTime();
         this.period = n - this.previousT;
         this.previousT = n;
-        //console.log(this.period);
 
         this.checkKeys();
+        
+        this.dropReleaseRate+=this.period;
 
         this.myblimp.updatePosition(this.period);
-        this.myblimp.display();
-
-        this.mysupply.updatePosition(this.period);
-        this.mysupply.display();
-
         
+        
+
+      
     }
 
     /*updateObjectComplexity(){
@@ -270,10 +275,12 @@ class MyScene extends CGFscene {
         //this.setActiveShader(this.terrainShader);
 
         this.myBackground.display();
-        //this.myblimp.display();
+        this.myblimp.display();
+
+        
+
         this.pushMatrix();
-        this.scale(0.4,0.4,0.4);
-        this.mysupply.display();
+        this.myblimp.drawSupplies(this.period);
         this.popMatrix();
         
         

@@ -13,7 +13,7 @@ class MySupply extends CGFobject {
         super(scene);
 
         this.position = blimpPosition;
-        this.startHeight = blimpPosition[1]+25;
+        this.startHeight = blimpPosition[1]+21.8;
 
         this.nDivs = nDivs;
         this.size = size;
@@ -26,7 +26,7 @@ class MySupply extends CGFobject {
         this.crateMaterial.setSpecular(0.2, 0.2, 0.2, 0.2);
         this.crateMaterial.setShininess(10.0);
 
-        this.crateTexture = new CGFtexture(this.scene, 'images/crateTexture.jpg');
+        this.crateTexture = new CGFtexture(this.scene, 'images/crateTexture-2.jpg');
         this.crateMaterial.setTexture(this.crateTexture);
         
         this.currentState = SupplyStates.INACTIVE;
@@ -36,6 +36,7 @@ class MySupply extends CGFobject {
   
     
     display(){
+        console.log("draw!!");
         //Back face
         this.crateMaterial.apply();
         
@@ -92,21 +93,22 @@ class MySupply extends CGFobject {
 
     }
 
-    launch() {
-        this.currentState = SupplyStates.FALLING;
+    drop(blimpPosition) {
+        this.position = blimpPosition;
+        
     }
 
-    
-    updatePosition(period){
-        console.log(period);
-        if(this.position[1]>-25){
+    updateFallPosition(period){
+        
+        if(this.position[1]>-this.startHeight){
             this.position = [this.position[0], this.position[1]-period/1000*this.startHeight/3, this.position[2]];
+
         }
         else{
             this.currentState = SupplyStates.LANDED;
         }
         
-        console.log(this.position);
+        //console.log(this.position);
     }
 
   }
