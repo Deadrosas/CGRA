@@ -131,7 +131,11 @@ class MyScene extends CGFscene {
         }
 
         if (this.gui.isKeyPressed("KeyP")) {
-            this.myblimp.setAutoPilot(true);
+            if(!this.myblimp.isAutoPilot()){
+                this.myblimp.setAutoPilot(true);
+            }else {
+                this.myblimp.setAutoPilot(false);
+            }
         }
 
         if (this.gui.isKeyPressed("KeyL")) {
