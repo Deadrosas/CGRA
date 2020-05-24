@@ -145,6 +145,7 @@ class MyScene extends CGFscene {
 
         if (this.gui.isKeyPressed("KeyR")) {
             this.myblimp.reset();
+            this.billboard.reset();
         }
 
         if (this.gui.isKeyPressed("KeyZ")) {

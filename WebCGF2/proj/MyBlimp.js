@@ -67,9 +67,9 @@ class MyBlimp extends CGFobject {
                 this.supplies[i].position = this.position;
             }else if(this.supplies[i].currentState == SupplyStates.FALLING){
                 this.supplies[i].updateFallPosition(period);
-                this.supplies[i].display();
+                this.supplies[i].fallingDisplay();
             }else{
-                this.supplies[i].display();
+                this.supplies[i].landedDisplay();
             }
             console.log(this.supplies[i].position);
         }
@@ -264,5 +264,9 @@ class MyBlimp extends CGFobject {
         this.turning = 0;
         this.position = [0, 0, 0];
         this.orientationAngle = 0;
+
+        for (var i = 0; i < 5; i++) {
+            this.supplies[i].currentState = SupplyStates.INACTIVE;
+        }
     }
 } 

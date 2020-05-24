@@ -34,9 +34,7 @@ class MySupply extends CGFobject {
     }
     
   
-    
-    display(){
-        console.log("draw!!");
+    fallingDisplay() {
         //Back face
         this.crateMaterial.apply();
         
@@ -90,7 +88,55 @@ class MySupply extends CGFobject {
         this.scene.rotate(-Math.PI/2, 1, 0, 0);
         this.quad.display();
         this.scene.popMatrix();
+    }
 
+    landedDisplay() {
+        //Back face
+        this.crateMaterial.apply();
+        
+        this.scene.pushMatrix();
+        this.scene.translate(this.position[0] + this.size - this.patchlenght, this.position[1], this.position[2]);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+        
+        // left face
+        this.scene.pushMatrix();
+        this.scene.translate(this.position[0], this.position[1], this.position[2]-this.size + this.patchlenght);
+        this.scene.rotate(-Math.PI, 0, 1, 0);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // right face
+
+        this.scene.pushMatrix();
+        this.scene.translate(this.position[0], this.position[1], this.position[2] + this.size - this.patchlenght);
+        this.scene.rotate(Math.PI, 0, 1, 0);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // Front face
+
+        this.scene.pushMatrix();
+        this.scene.translate(this.position[0]-this.size + this.patchlenght, this.position[1], this.position[2]);
+        this.scene.rotate(Math.PI, 0, 1, 0);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+
+        // bottom face
+
+        this.scene.pushMatrix();
+        this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.quad.display();
+        this.scene.popMatrix();
+    }
+    
+    display(){
+        this.fallingDisplay();
     }
 
     drop(blimpPosition) {
