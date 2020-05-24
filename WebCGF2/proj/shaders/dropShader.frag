@@ -1,21 +1,15 @@
-S#ifdef GL_ES
+#ifdef GL_ES
 precision highp float;
 #endif
 
-varying vec2 vTextureCoord;
+varying vec4 coords;
+varying vec4 normal;
+uniform float drops;
 
-uniform sampler2D uSampler;
-uniform sampler2D uSampler2;
+void main() {
 
-
-varying vec4 coordinates;
-
-uniform int drops;
-
-void main(){
-
-
-    gl_FragColor.rgb = vec4(1,1,1,1);
-    
-    
+    if (coords.x < 1.0 - (drops / 5.0))
+        gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0);
+    else
+        gl_FragColor = vec4(coords.x, 1.0-coords.x, 0.0, 1.0);
 }

@@ -60,7 +60,7 @@ class MyScene extends CGFscene {
 
         this.myblimp = new MyBlimp(this,50,50);
         this.terrain = new MyTerrain(this, 50);
-        
+        this.billboard = new MyBillboard(this);
 
 
         //Objects connected to MyInterface
@@ -137,6 +137,7 @@ class MyScene extends CGFscene {
         if (this.gui.isKeyPressed("KeyL")) {
             if(this.dropReleaseRate>1000){
                 this.myblimp.dropSupply();
+                this.billboard.updateBillboardValues();
                 this.dropReleaseRate = 0;
             }
             
@@ -276,6 +277,7 @@ class MyScene extends CGFscene {
 
         this.myBackground.display();
         this.myblimp.display();
+        this.billboard.display();
 
         
 
